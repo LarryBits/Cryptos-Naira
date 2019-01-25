@@ -14,7 +14,7 @@
         <input type="text" id ="basic-addon2nd" class=" form-control rounded-0"  disabled :placeholder='boxTwo'>
       </div>
       <footer>
-        <h4 id='foot'>&copy; {{date.getFullYear()}} LarryBits </h4>
+        <h4 id='foot'>&copy; {{date.getFullYear()}} LarryBits.</h4>
       </footer>
     </div>
   
@@ -39,7 +39,7 @@ export default {
  },
  watch:{
    boxOne(newValue,oldValue){
-     this.boxTwo = `#${(newValue * parseFloat(this.coinPrice.price) * this.usdPrice.val).toFixed(4)}`;
+     this.boxTwo = `₦${(newValue * parseFloat(this.coinPrice.price) * this.usdPrice.val).toFixed(2)}`;
    }
 },
   methods:{
@@ -57,7 +57,7 @@ export default {
       axios.get(`https://api.cryptonator.com/api/ticker/${val}-usd`)
         .then(response=>{
           this.coinPrice = {...response.data.ticker};
-          this.boxTwo =`#${(this.boxOne * parseFloat(this.coinPrice.price) * this.usdPrice.val).toFixed(4)}`;
+          this.boxTwo =`₦${(this.boxOne * parseFloat(this.coinPrice.price) * this.usdPrice.val).toFixed(2)}`;
         })
 
         
@@ -95,6 +95,8 @@ select{
 }
 
 footer{
-  margin-top:100em;
+  margin-top:15em;
+  color:#143441;
+  font-family: 'Comfortaa', cursive;
 }
 </style>
