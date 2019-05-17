@@ -14,14 +14,15 @@
         <input type="text" id ="basic-addon2nd" class=" form-control rounded-0"  disabled :placeholder='boxTwo'>
       </div>
       <footer>
-        <h4 id='foot'>&copy; {{date.getFullYear()}} LarryBits.</h4>
+        <h4 id='foot'>&copy; {{date.getFullYear()}} iamdyt.</h4>
       </footer>
     </div>
   
 </div>
 </template>
 <script>
-  import {coin} from '../assets/Coin.js'
+  import {coin} from '../assets/Coin.js';
+  import axios from 'axios';
 export default {
   data(){
     return{
@@ -29,7 +30,7 @@ export default {
       shortCode:coin,
       boxOne:1,
       boxTwo:'NGN',
-      coinPrice:'',
+      coinPrice:0,
       usdPrice:''
     }
   },
@@ -39,16 +40,19 @@ export default {
  },
  watch:{
    boxOne(newValue,oldValue){
-     this.boxTwo = `₦${(newValue * parseFloat(this.coinPrice.price) * this.usdPrice.val).toFixed(2)}`;
+     this.boxTwo = `₦${(newValue * parseFloat(this.coinPrice) * this.usdPrice).toFixed(2)}`;
    }
 },
   methods:{
     //Function get called on Mounted to get dollar-Naira rate
     getUsdNaira(){
-     axios.get(`https://free.currencyconverterapi.com/api/v6/convert?q=USD_NGN&compact=y`) 
+     axios.get(`https://free.currconv.com/api/v7/convert?q=USD_NGN&compact=ultra&apiKey=44d63bd5d10556a1a8e2`) 
       .then(result=>{
-        this.usdPrice = {...result.data.USD_NGN}
-      })
+        this.usdPrice = result.data.USD_NGN
+        
+      }).catch(error =>{
+          alert("Please Refresh or Check your Internet Connection")
+        })
      
     },
   // Function get called onSelecting new option/coin
@@ -56,8 +60,8 @@ export default {
       let val = event.target.value.toLowerCase();
       axios.get(`https://api.cryptonator.com/api/ticker/${val}-usd`)
         .then(response=>{
-          this.coinPrice = {...response.data.ticker};
-          this.boxTwo =`₦${(this.boxOne * parseFloat(this.coinPrice.price) * this.usdPrice.val).toFixed(2)}`;
+          this.coinPrice = response.data.ticker.price;
+          this.boxTwo =`₦${(this.boxOne * parseFloat(this.coinPrice * this.usdPrice).toFixed(2))}`;
         })
 
         
