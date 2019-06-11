@@ -14,7 +14,7 @@
         <input type="text" id ="basic-addon2nd" class=" form-control rounded-0"  disabled :placeholder='boxTwo'>
       </div>
       <footer>
-        <h4 id='foot'>&copy; {{date.getFullYear()}} iamdyt.</h4>
+        <h4 id='foot'>&copy; {{date.getFullYear()}} <a href='https://github.com/iamdyt'>iamdyt.</a></h4>
       </footer>
     </div>
   
@@ -51,7 +51,12 @@ export default {
         this.usdPrice = result.data.USD_NGN
         
       }).catch(error =>{
-          alert("Please Refresh or Check your Internet Connection")
+                          swal({
+                  title: "Error!",
+                  text: "Check your Internet Connection!",
+                  icon: "error",
+                  button: "Close!",
+                });
         })
      
     },
@@ -62,6 +67,14 @@ export default {
         .then(response=>{
           this.coinPrice = response.data.ticker.price;
           this.boxTwo =`₦${(this.boxOne * parseFloat(this.coinPrice * this.usdPrice).toFixed(2))}`;
+        })
+        .catch(error=>{
+          swal({
+                  title: "Error!",
+                  text: "Check your Internet Connection!",
+                  icon: "error",
+                  button: "Close!",
+                });
         })
 
         
@@ -100,7 +113,10 @@ select{
 
 footer{
   margin-top:15em;
-  color:#143441;
+  color:#143441 !important;
   font-family: 'Comfortaa', cursive;
+}
+a{
+   color:#143441 !important;
 }
 </style>
